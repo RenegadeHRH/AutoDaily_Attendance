@@ -21,7 +21,6 @@ BaseInfo=GetBaseInfo.GetBaseInfo()
 BaseInfo.GetBaseInfo()
 def AutoDaily_Attendance():
     url='https://yqfk.dgut.edu.cn/home/base_info/addBaseInfo'
-
     headers={
         'Connection':'keep-alive',
             "Accept":"application/json" ,
@@ -39,5 +38,7 @@ def AutoDaily_Attendance():
 }
     data=BaseInfo.GetBaseInfo()
     response=requests.post(url,headers=headers,json=data)
+    while response.text.find("提交") == -1:
+        response = requests.post(url, headers=headers, json=data)
     print(response.text)
 AutoDaily_Attendance()

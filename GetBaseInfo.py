@@ -12,19 +12,19 @@ import requests
 import CenterToken
 import json
 from Decorations.testGetBaseInfo import testResultGetBaseInfo_json
-
+from Decorations.RedoWhenFail import RedoWhenFail
 
 class GetBaseInfo:
     # 此处修改账号密码
-    userID = ''
-    passwd =''
+    userID = '201841413111'
+    passwd ='Hrh756810279'
 
     def __init__(self):
         # 此处获取页面源码，以及cookie
         self.raw, self.cookies = CenterToken.getRawResonse()
         # 从页面源码获取token
         self.token = CenterToken.SearchToken(self.raw.text)
-
+    @RedoWhenFail
     def GetAuth(self):
         """
         获取Authentication
@@ -53,9 +53,10 @@ class GetBaseInfo:
         response = requests.post(url=url, headers=headers, data=data)
         f = json.loads(response.json())
         response2 = requests.get(f['info'])
+
         self.Auth = 'Bearer ' + response2.history[0].headers['Location'][22:]
         return self.Auth
-
+    @RedoWhenFail
     def GetBaseInfo_Raw(self):
         """
         获取未处理过的表单信息
@@ -74,10 +75,14 @@ class GetBaseInfo:
             "Accept-Language": "zh-CN,zh;q=0.9",
             "Cookie": "_ga=GA1.3.1085698636.1567594517; UM_distinctid=17666b41075c41-0d0f1aed6335ee-5a301e42-1fa400-17666b41076ab6; _gid=GA1.3.747935397.1608554081; PHPSESSID=" + self.cookies
         }
+
         response = requests.get(url=url, headers=headers)
 
         baseInfo_json = json.loads(response.text)
         self.baseInfo_json = baseInfo_json
+
+
+
         return self.baseInfo_json
 
     def GetBaseInfo(self):
@@ -107,8 +112,8 @@ class GetBaseInfo:
                     f.write(json.dumps(baseinfo, ensure_ascii=False))
         self.content_json = content_json
         return self.content_json
-
-    @testResultGetBaseInfo_json
+    @RedoWhenFail
+    # @testResultGetBaseInfo_json
     def GetBaseInfo_json(self):
         """
         主API，处理表单信息,并写入文件，如果文件已存在则在文件中读

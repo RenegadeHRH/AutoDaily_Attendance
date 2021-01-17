@@ -18,7 +18,7 @@ raw,cookies = CenterToken.getRawResonse()
 #从页面源码获取token
 token= CenterToken.SearchToken(raw.text)
 BaseInfo=GetBaseInfo.GetBaseInfo()
-BaseInfo.GetBaseInfo()
+BaseInfo.GetBaseInfo_json()
 def AutoDaily_Attendance():
     url='https://yqfk.dgut.edu.cn/home/base_info/addBaseInfo'
     headers={
@@ -36,7 +36,7 @@ def AutoDaily_Attendance():
           "Accept-Language":"zh-CN,zh;q=0.9",
           "Cookie":"_ga=GA1.3.1085698636.1567594517; PHPSESSID="+BaseInfo.cookies
 }
-    data=BaseInfo.GetBaseInfo()
+    data=BaseInfo.GetBaseInfo_json()
     response=requests.post(url,headers=headers,json=data)
     while response.text.find("提交") == -1:
         response = requests.post(url, headers=headers, json=data)

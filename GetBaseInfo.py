@@ -16,8 +16,8 @@ from Decorations.RedoWhenFail import RedoWhenFail
 
 class GetBaseInfo:
     # 此处修改账号密码
-    userID = '201841413111'
-    passwd ='Hrh756810279'
+    userID = ''
+    passwd =''
 
     def __init__(self):
         # 此处获取页面源码，以及cookie

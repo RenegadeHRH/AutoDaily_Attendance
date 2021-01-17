@@ -9,8 +9,8 @@
 import requests
 from lxml import etree
 import re
-userID='201841413111'
-passwd='Hrh756810279'
+userID=''
+passwd=''
 
 def getRawResonse():
     """

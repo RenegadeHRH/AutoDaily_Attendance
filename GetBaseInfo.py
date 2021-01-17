@@ -30,6 +30,8 @@ class GetBaseInfo:
         获取Authentication
         :return:
         """
+        if len(self.userID) == 0 or len(self.passwd) == 0:
+            raise AttributeError("请他妈的填写账号密码")
         url = 'https://cas.dgut.edu.cn/home/Oauth/getToken/appid/illnessProtectionHome/state/home.html'
         headers = {
             "Accept": "application/json, text/javascript, */*; q=0.01",
@@ -84,34 +86,6 @@ class GetBaseInfo:
 
 
         return self.baseInfo_json
-
-    def GetBaseInfo(self):
-        """
-        主API，处理表单信息,并写入文件，如果文件已存在则在文件中读
-        :return: 处理过的表单信息，可以直接当做header
-        """
-        baseinfo = self.GetBaseInfo_Raw()['info']
-        del baseinfo["whitelist"]
-        del baseinfo["msg"]
-        # del baseinfo['importantAreaMsg']
-        flag = True
-        while flag:
-            try:
-                with open('baseInfo.txt', 'r', encoding='utf8') as f:
-                    content = f.read()
-
-                    if len(content) == 0:
-                        raise FileNotFoundError
-                    content_json = json.loads(content)
-                    content_json["submit_time"] = datetime.date.today().__str__()
-                    print(content_json["submit_time"])
-                    flag = False
-            except FileNotFoundError:
-                with open('baseInfo.txt', 'w', encoding='utf8') as f:
-                    print('第一次运行吗？\n保存数据')
-                    f.write(json.dumps(baseinfo, ensure_ascii=False))
-        self.content_json = content_json
-        return self.content_json
     @RedoWhenFail
     # @testResultGetBaseInfo_json
     def GetBaseInfo_json(self):
